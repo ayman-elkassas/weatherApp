@@ -6,6 +6,8 @@
           <v-card color="blue-gray darken-2" dark>
             <v-card-text>
               <v-layout v-if="weather.weather" justify-center>
+
+<!--                //Temp-->
                 <v-flex class="text-center" v-if="weather.main">
                   <h4>Temperature</h4>
                   <h1 class="display-1" style="color:#f5ff00 ">{{weather.name}}</h1>
@@ -13,19 +15,29 @@
                   <p><span style="color: darkorange" class="display-1">{{temp()}} &#176;C</span></p>
                   <p><span class="caption ml-4">{{weather.weather[0].description}}</span></p>
                 </v-flex>
+
+<!--                //Pres & Wind-->
                 <v-flex class="text-center" v-if="weather.main">
-                  <h4>Temperature</h4>
-                  <h1 class="display-1" style="color:#f5ff00 ">{{weather.name}}</h1>
-                  <img :src="icon" alt="weather icon">
-                  <p><span style="color: darkorange" class="display-1">{{temp()}} &#176;C</span></p>
-                  <p><span class="caption ml-4">{{weather.weather[0].description}}</span></p>
+                  <h4>Wind And Pressure</h4>
+                  <h1 class="headline mt-4" style="color:#f5ff00 ">
+                    Wind: {{weather.wind.speed}} m/s {{weather.wind.deg}} &deg;
+                  </h1>
+                  <h1 class="headline mt-4" style="color:#00ccff ">
+                    Humidity: {{weather.main.humidity}} %
+                  </h1>
+                  <h1 class="headline mt-4" style="color:#00ff8e ">
+                    Pressure: {{weather.main.pressure}} hPa
+                  </h1>
                 </v-flex>
+
                 <v-flex class="text-center" v-if="weather.main">
-                  <h4>Temperature</h4>
-                  <h1 class="display-1" style="color:#f5ff00 ">{{weather.name}}</h1>
-                  <img :src="icon" alt="weather icon">
-                  <p><span style="color: darkorange" class="display-1">{{temp()}} &#176;C</span></p>
-                  <p><span class="caption ml-4">{{weather.weather[0].description}}</span></p>
+                  <h4>Other</h4>
+                  <h1 class="headline mt-4" style="color:#00ccff ">
+                    Max Temperature: {{Math.round(weather.main.temp_max -273)}} &deg; C
+                  </h1>
+                  <h1 class="headline mt-4" style="color:#00ccff ">
+                    Min Temperature: {{Math.round(weather.main.temp_min -273)}} &deg; C
+                  </h1>
                 </v-flex>
 
               </v-layout>
@@ -57,12 +69,14 @@
     name : 'weather-app',
     data(){
       return{
+        weatherAppId:'913917a63abeb8f987f2a74faa0615c8',
         city:'London',
         weather:{}
       }
     },
     //TODO:To initialize data before render it by move to (SSR)
-    asyncData ({ params ,$axios}) {
+    //TODO:Cannot use in it any variables because does not load before
+    asyncData ({$axios}) {
       return $axios.$get(
         'https://api.openweathermap.org/data/2.5/weather?q=' +
         'London'+
@@ -85,7 +99,7 @@
         this.$axios.$get(
           'https://api.openweathermap.org/data/2.5/weather?q=' +
           this.city+
-          '&appid=913917a63abeb8f987f2a74faa0615c8'
+          '&appid='+this.weatherAppId
         ).then(res=>{
           console.log(res)
           this.weather=res
