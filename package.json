@@ -14,7 +14,7 @@
     "test:e2e": "cross-env TEST=e2e ava ./test/e2e/**/*"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/axios": "^5.9.7",
     "dotenv": "^8.2.0",
     "nuxt": "^2.0.0"
   },
